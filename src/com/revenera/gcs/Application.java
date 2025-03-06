@@ -77,8 +77,8 @@ public class Application implements ServletContextListener {
 
     logger.me(this);
 
-    this.buildSequence = "1065";
-    this.buildDate = "2025.02.22";
+    this.buildSequence = "1001";
+    this.buildDate = "2025.03.06";
 
     singleton.getAndSet(this);
 

@@ -66,22 +66,20 @@ public abstract class AbstractImplementor implements LicenseGeneratorServiceInte
 
       return new PingResponse() {
         {
-          final PingInfo pinfo = PingInfo.create();
+          this.info = Utils.safeSerializeYaml(info);
 
-          this.info = Utils.safeSerializeYaml(pinfo);
-
+          final PingInfo info = PingInfo.create();
           this.str = String.format("%s | %s | %s | %s | %s | %s | %s | %s | %s | %s",
                                    logger.type().getSimpleName(),
                                    Application.getInstance().getBuildDate(),
                                    Application.getInstance().getBuildSequence(),
                                    technologyId(),
-                                   pinfo.system.name,
-                                   pinfo.system.version,
-                                   pinfo.system.architecture,
-                                   pinfo.hostName,
-                                   pinfo.userName,
+                                   info.system.name,
+                                   info.system.version,
+                                   info.system.architecture,
+                                   info.hostName,
+                                   info.userName,
                                    Application.getInstance().getResourcePath().toString());
-
 
           this.processedTime = Instant.now().toString();
         }
@@ -108,21 +106,6 @@ public abstract class AbstractImplementor implements LicenseGeneratorServiceInte
       {
         this.message = "license model is validated | " + model.getName();
         this.code = 0;
-      }
-    };
-  }
-
-  @Override
-  public ConsolidatedLicense consolidateFulfillments(final FulfillmentRecordSet fulfillmentRecordset) throws LicGeneratorException {
-    final String license = fulfillmentRecordset.getFulfillments().stream().flatMap(fulfilment -> fulfilment.getLicenseFiles().stream()).filter(lfd -> String.class.isAssignableFrom(lfd.getValue().getClass())).map(lfd -> lfd.getValue().toString()).collect(Collectors.joining("\n"));
-
-    return new ConsolidatedLicense() {
-      {
-        this.fulfillments = fulfillmentRecordset.getFulfillments();
-
-        fulfillmentRecordset.getFulfillments().stream().findAny().ifPresent(fid -> {
-          this.licFiles = makeLicenseFiles(fid.getLicenseTechnology().getLicenseFileDefinitions(), license, null);
-        });
       }
     };
   }

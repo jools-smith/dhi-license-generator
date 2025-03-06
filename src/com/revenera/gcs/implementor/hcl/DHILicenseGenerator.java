@@ -126,17 +126,17 @@ class FeatureLine {
   }
 }
 
-@GeneratorImplementor(technology = "RI")
-public class RevenueIntelligenceLicenseGenerator extends AbstractImplementor {
+@GeneratorImplementor(technology = "DHI")
+public class DHILicenseGenerator extends AbstractImplementor {
 
   @Override
   public String technologyName() {
-    return "Revenue Intelligence License Technology";
+    return "DHI Legacy License Technology";
   }
 
   @Override
   public String technologyId() {
-    return "RI";
+    return "DHI";
   }
 
   private enum Strings {
